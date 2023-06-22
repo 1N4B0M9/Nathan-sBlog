@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../dist/style/admin.css" /> 
+
+</head>
+<body>
+  <h1><Hi/h1>
+  <h1>Hello</h1>
+  <button onclick = "deBug()">Debug</button>
+<div id="content" class="hidden">
+<form method="POST" action="/profile-upload-single" enctype="multipart/form-data">
+  <div>
+      <label>Upload profile picture</label>
+      <input type="file" name="profile-file" required/>
+  </div>
+  <div>
+      <input type="submit" value="Upload" />
+  </div>
+</form>
+<hr>
+<form method="POST" action="/profile-upload-multiple" enctype="multipart/form-data">
+  <div>
+      <label>Upload multiple profile picture</label>
+      <input type="file" name="profile-files" required multiple  />
+  </div>
+  <div>
+      <input type="submit" value="Upload" />
+  </div>
+</form>
+</div>
+
+    <script src="main.js"></script>
+
+    <script>
+      //https://github.com/1N4B0M9/nathansblog.git
+
+const analytics = getAnalytics(app);
+const auth = getAuth(app)
+const user = auth.currentUser;
+
+console.log(user)
+console.log("^^^^")
+
+var contentDiv;
+
+document.addEventListener("DOMContentLoaded", function() {
+  contentDiv = document.getElementById("content");
+  console.log(user)
+  console.log("^^^^")
+  toggleContentVisibility();
+});
+
+function isUserLoggedIn() {
+  return auth.currentUser !== null;
+}
+
+function toggleContentVisibility() {
+  contentDiv.style.display = isUserLoggedIn() ? "block" : "none";
+}
+function deBug(){
+  console.log("Print User")
+  console.log(auth.currentUser)
+}
+
+
+        </script>
+    
+</body>
+</html>

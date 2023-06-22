@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Gallery</title>
+  <style>
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .gallery img {
+      max-width: 300px;
+      max-height: 200px;
+    }
+    h1 {
+      font-family: 'Times New Roman', Times, serif;
+      color: green;
+      text-align: center;
+      
+      
+
+    }
+    body {
+      padding: 0px;
+      margin: 0px;
+    }
+    header {
+      background-image: url("/assets/Subject.png");
+      background-repeat: repeat-x;
+      background-size: 150px;
+      height: 100px;
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+
+      
+    }
+    h4 {
+      color: green;
+      text-align: end;
+      margin-right: 40px;
+      height: 100%;
+
+    }
+    h4:hover {
+      color: lightgreen;
+      text-decoration: none;
+
+    }
+    a {
+      text-decoration: none;
+      padding: 0px;
+      margin: 0px;
+
+    }
+   
+  </style>
+</head>
+<body>
+
+  <a href = "login"><h4>Login</h4></a>
+  
+  <header>
+    
+  </header>
+  <h1>Nathan's Pictures</h1>
+
+
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    fetch('/uploads')
+      .then(response => response.json())
+      .then(imageFiles => {
+        const gallery = document.getElementById('gallery');
+        imageFiles.forEach(file => {
+          const img = document.createElement('img');
+          img.src = `uploads/${file}`;
+          img.alt = file;
+          gallery.appendChild(img);
+        });
+      })
+      .catch(error => console.error(error));
+  </script>
+</body>
+</html>
