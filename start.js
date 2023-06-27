@@ -114,4 +114,7 @@ app.post('/profile-upload-multiple', upload.array('profile-files', 12), function
     return res.send(response)
 })
 
-app.listen(port,() => console.log(`Server running on port ${port}!`))
+//app.listen(port,() => console.log(`Server running on port ${port}!`))
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
