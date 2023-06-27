@@ -1,3 +1,21 @@
 .hidden {
-  display: none;
+  display: block;
+}
+h4 {
+  color: green;
+  text-align: end;
+  margin-right: 40px;
+  height: 100%;
+
+}
+h4:hover {
+  color: lightgreen;
+  text-decoration: none;
+
+}
+a {
+  text-decoration: none;
+  padding: 0px;
+  margin: 0px;
+
 }

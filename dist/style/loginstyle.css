@@ -1,0 +1,33 @@
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    color: green;
+    text-align: center;
+}
+div {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%
+    
+
+}
+h4 {
+    color: green;
+    text-align: end;
+    margin-right: 40px;
+    height: 100%;
+
+  }
+  h4:hover {
+    color: lightgreen;
+    text-decoration: none;
+
+  }
+  a {
+    text-decoration: none;
+    padding: 0px;
+    margin: 0px;
+
+  }
+  .form{
+    width: 50%;
+  }

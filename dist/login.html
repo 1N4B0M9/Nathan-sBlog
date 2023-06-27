@@ -1,55 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-
+  <title>Login Page</title>
+  <link rel="stylesheet" href="/style/loginstyle.css" /> 
 </head>
 <body>
+  <a href = "/"><h4>Home</h4></a>
 
-    <h1>Login</h1>
-
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" required><br>
-
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password" required><br>
-
-		<input type="submit" value="Submit" id = "loginbutton">
-    <script src="main.js"></script>
-
-    <script> 
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app)
-  
-const loginButton = document.getElementById('loginbutton');
-
-
-loginButton.addEventListener('click', () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-  
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-          user = userCredential.user;
-
-        console.log('User signed in:', userCredential.user);
-        //window.location.href = "/hhh";
-        window.location.assign("/hhh");
-
-      })
-      .catch(error => {
-        console.error('Error signing in:', error);
-      });
-  });
-   
-
-
-    </script>
-
-
+  <h1>Login Page</h1>
+  <form id="loginForm" action="/login" method="post">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Login</button>
+  </form>
+  <div id="message"></div>
 </body>
 </html>

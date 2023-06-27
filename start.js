@@ -1,6 +1,7 @@
 var express = require('express')
 var multer  = require('multer')
 const fs = require('fs');
+const bodyParser = require('body-parser');
 
 const path = require('path');
 const imagePath = './uploads';
@@ -61,14 +62,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/a', (req, res) => {
-  res.sendFile(path.join(__dirname + 'admin.html'));
+  res.sendFile(path.join(__dirname + '/dist/admin.html'));
+});
+app.get('/l', (req, res) => {
+  res.sendFile(path.join(__dirname + '/dist/login.html'));
+});
+app.get('/aa', (req, res) => {
+  res.sendFile(path.join(__dirname + '/admin.html'));
+});
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/dist/admin.html'));
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'admin.html'));
-});
-app.get('login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'login.html'));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Replace this with your own authentication logic
+  if (username === 'Nathan' && password === 'Hunter1409') {
+    //res.send(`<h2>Welcome, ${username}!</h2>`);
+    res.redirect('/admin'); // Redirect to the dashboard page
+
+  } else {
+    res.send('<h2>Invalid username or password</h2>');
+  }
 });
 
 //app.get('/admin', (req, res) => {

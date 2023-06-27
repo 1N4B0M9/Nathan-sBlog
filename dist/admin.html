@@ -5,13 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../dist/style/admin.css" /> 
+    <link rel="stylesheet" href="/style/admin.css" /> 
 
 </head>
 <body>
-  <h1><Hi/h1>
-  <h1>Hello</h1>
-  <button onclick = "deBug()">Debug</button>
+
+  <a href = "/"><h4>Home</h4></a>
+
+  <h1>Admin</h1>
 <div id="content" class="hidden">
 <form method="POST" action="/profile-upload-single" enctype="multipart/form-data">
   <div>
@@ -34,38 +35,32 @@
 </form>
 </div>
 
-    <script src="main.js"></script>
+<script src="/main.js"></script>
 
     <script>
       //https://github.com/1N4B0M9/nathansblog.git
 
-const analytics = getAnalytics(app);
-const auth = getAuth(app)
-const user = auth.currentUser;
+      
+  
+      var contentDiv;
+      
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/auth.user
+          const uid = user.uid;
+          console.log(user)
+          contentDiv.style.display = "block"
+      } else {
+        // User is signed out
+          console.log("No")
+          contentDiv.style.display = "none"
+          }
+        });
 
-console.log(user)
-console.log("^^^^")
 
-var contentDiv;
 
-document.addEventListener("DOMContentLoaded", function() {
-  contentDiv = document.getElementById("content");
-  console.log(user)
-  console.log("^^^^")
-  toggleContentVisibility();
-});
 
-function isUserLoggedIn() {
-  return auth.currentUser !== null;
-}
-
-function toggleContentVisibility() {
-  contentDiv.style.display = isUserLoggedIn() ? "block" : "none";
-}
-function deBug(){
-  console.log("Print User")
-  console.log(auth.currentUser)
-}
 
 
         </script>

@@ -1,26 +1,7 @@
-
 import _ from 'lodash';
-function component() {
-  const element = document.createElement('div');
-
-  // Lodash, now imported by this script
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-
-  return element;
-}
-
-document.body.appendChild(component());
-
-
-
-  
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "firebase/app";
-  import { getAnalytics } from "firebase/analytics";
- // import { getAuth } from "firebase/auth";
-  //import { getAuth, onAuthStateChanged } from "firebase/auth";
-  import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-  import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { initializeApp } from "@firebase/app";
+import { getAnalytics } from "@firebase/analytics";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "@firebase/auth";
 
   
 // TODO: Add SDKs for Firebase products that you want to use
@@ -40,7 +21,25 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const user;
+const analytics = getAnalytics(app);
+const auth = getAuth(app)
+
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    const uid = user.uid;
+    console.log(user)
+    contentDiv.style.display = "block"
+} else {
+  // User is signed out
+    console.log("No")
+    contentDiv.style.display = "none"
+    }
+  });
+
+
 /*const analytics = getAnalytics(app);
 const auth = getAuth(app)
   
