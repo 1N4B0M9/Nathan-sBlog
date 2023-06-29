@@ -5,6 +5,19 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 const imagePath = './uploads';
+//redis
+const redis = require("redis");
+const client = redis.createClient({url: process.env.REDIS_URL});
+//^^
+const redis = require("redis");
+
+const client = redis.createClient({
+  url: process.env.REDIS_URL,
+  socket: {
+    tls: true,
+    rejectUnauthorized: false,
+  }
+});
 
 var port = 3000;
 
