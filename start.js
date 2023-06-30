@@ -155,7 +155,7 @@ app.post('/profile-upload-single', upload.single('profile-file'), function (req,
   //return res.send(response)
 })
 
-app.post('/profile-upload-multiple', upload.array('profile-files', 12), function (req, res, next) {
+/*app.post('/profile-upload-multiple', upload.array('profile-files', 12), function (req, res, next) {
     // req.files is array of `profile-files` files
     // req.body will contain the text fields, if there were any
     var response = '<a href="/">Home</a><br>'
@@ -166,7 +166,7 @@ app.post('/profile-upload-multiple', upload.array('profile-files', 12), function
     
     return res.send(response)
 })
-
+*/
 //app.listen(port,() => console.log(`Server running on port ${port}!`))
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);

@@ -69,7 +69,7 @@ header {
   height: 240px;
   background-size: 400px;
 }
-.gallery img {
+#imageContainer img {
   max-height: 70%;
   max-width: 70%;
 
