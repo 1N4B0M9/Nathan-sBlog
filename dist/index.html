@@ -2,109 +2,45 @@
 <html>
 <head>
   <title>Image Gallery</title>
-  <style>
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px;
-    }
-    
-    .gallery img {
-      max-width: 25%;
-      max-height: 25%;
-    }
-    h1 {
-      font-family: 'Times New Roman', Times, serif;
-      color: green;
-      text-align: center;
-      /*font-size : 7.5vw;*/
+  <link rel="stylesheet" href="/style/ind.css" /> 
 
-
-      
-      
-
-    }
-    body {
-      padding: 0px;
-      margin: 0px;
-    }
-    header {
-      background-image: url("/assets/Subject.png");
-      background-repeat: repeat-x;
-      background-size: 150px;
-      height: 100px;
-      width: 100%;
-      padding: 0px;
-      margin: 0px;
-
-      
-    }
-    h4 {
-      color: green;
-      text-align: end;
-      margin-right: 40px;
-      height: 100%;
-
-    }
-    h4:hover {
-      color: lightgreen;
-      text-decoration: none;
-
-    }
-    a {
-      text-decoration: none;
-      padding: 0px;
-      margin: 0px;
-
-    }
-    @media only screen and (max-width: 1000px) {
-    h1 {
-      font-size : 50px;
-
-  }
-  h4 {
-    font-size : 20px;
-
-  }
-  header {
-    height: 240px;
-    background-size: 400px;
-  }
-  .gallery img {
-    max-height: 70%;
-    max-width: 70%;
-
-  }
-  }
-   
-  </style>
+  
 </head>
 <body>
-
   <a href = "/l"><h4>Login</h4></a>
   
   <header>
     
   </header>
 
-  <h1>Nathan's Photos</h1>>
-  <div class="gallery" id="gallery"></div>
-
+  <h1>Nathan's Photos</h1>>  <div id="imageContainer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/x2js/1.2.0/xml2json.min.js" integrity="sha512-HX+/SvM7094YZEKOCtG9EyjRYvK8dKlFhdYAnVCGNxMkA59BZNSZTZrqdDlLXp0O6/NjDb1uKnmutUeuzHb3iQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
-    fetch('/uploads')
-      .then(response => response.json())
-      .then(imageFiles => {
-        const gallery = document.getElementById('gallery');
-        imageFiles.forEach(file => {
-          const img = document.createElement('img');
-          img.src = `uploads/${file}`;
-          img.alt = file;
-          gallery.appendChild(img);
+    // Fetch the images from the server
+    fetch('https://nathanmorelli-blog.s3.us-east-2.amazonaws.com/')
+      .then(response => response.text())
+      .then(xmlString => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+
+        const imageKeys = Array.from(xmlDoc.getElementsByTagName('Key')).map(key => key.textContent.trim());
+
+        const imageContainer = document.getElementById('imageContainer');
+
+        imageKeys.forEach(key => {
+          const imageUrl = `https://nathanmorelli-blog.s3.us-east-2.amazonaws.com/${key}`;
+
+          const imageElement = document.createElement('img');
+          imageElement.src = imageUrl;
+          imageElement.classList.add('image');
+
+          imageContainer.appendChild(imageElement);
         });
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+      });
   </script>
 </body>
 </html>
+

@@ -2,7 +2,6 @@ var express = require('express')
 var multer  = require('multer')
 const fs = require('fs');
 const bodyParser = require('body-parser');
-
 const path = require('path');
 const imagePath = './uploads';
 //redis
@@ -10,15 +9,25 @@ const redis = require("redis");
 const client = redis.createClient({url: process.env.REDIS_URL});
 //^^
 //AWS
-const AWS = require('aws-sdk');
+const S3 = require('aws-sdk/clients/s3')
+require('dotenv').config()
+const parseString = require('xml2js').parseString;
 
+const bucketName = process.env.AWS_BUCKET_NAME
+const region = process.env.AWS_BUCKET_REGION
+const accessKeyId = process.env.AWS_ACCESS_KEY
+const secretAccessKey = process.env.AWS_SECRET_KEY
 
+const s3 = new S3({
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
+});
 
 var port = 3000;
 
 var app = express()
 
-var storage = multer.diskStorage({
+/*var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './uploads')
     },
@@ -26,8 +35,11 @@ var storage = multer.diskStorage({
       cb(null, file.originalname)
     }
 })
-var upload = multer({ storage: storage })
-
+*/
+//var upload = multer({ storage: storage })
+const upload = multer({
+  storage: multer.memoryStorage(),
+});
 app.get('/uploads', (req, res) => {
   // Read the images from the folder
   fs.readdir(imagePath, (err, files) => {
@@ -65,9 +77,26 @@ app.use(express.static(__dirname + '/dist'));
 app.use('/uploads', express.static('uploads'));
 // Define a route for the home page
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+//app.get('/', (req, res) => {
+  //res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+//});
+
+app.get('https://nathanmorelli-blog.s3.us-east-2.amazonaws.com/', (req, res) => {
+  const params = {
+    Bucket: bucketName,
+  };
+
+  s3.listObjectsV2(params, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      const imageKeys = data.Contents.map(item => item.Key);
+      res.send(imageKeys);
+    }
+  });
 });
+
 
 app.get('/a', (req, res) => {
   res.sendFile(path.join(__dirname + '/dist/admin.html'));
@@ -100,14 +129,30 @@ app.post('/login', (req, res) => {
 //app.get('/admin', (req, res) => {
  // res.sendFile(path.join(__dirname, 'dist', 'admin.html'));
 //});
-app.post('/profile-upload-single', upload.single('profile-file'), function (req, res, next) {
+app.post('/profile-upload-single', upload.single('profile-file'), function (req, res) {
   // req.file is the `profile-file` file
   // req.body will hold the text fields, if there were any
+  const file = req.file;
+  const params = {
+    Bucket: bucketName,
+    Key: file.originalname,
+    Body: file.buffer,
+  };
+
   console.log(JSON.stringify(req.file))
-  var response = '<a href="/">Home</a><br>'
-  response += "Files uploaded successfully.<br>"
-  response += `<img src="${req.file.path}" /><br>`
-  return res.send(response)
+  //var response = '<a href="/">Home</a><br>'
+  //response += "Files uploaded successfully.<br>"
+  //response += `<img src="${req.file.path}" /><br>`
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      console.log('File uploaded successfully:', data.Location);
+      res.send('File uploaded successfully!');
+    }
+  });
+  //return res.send(response)
 })
 
 app.post('/profile-upload-multiple', upload.array('profile-files', 12), function (req, res, next) {
