@@ -149,7 +149,7 @@ app.post('/profile-upload-single', upload.single('profile-file'), function (req,
       res.status(500).send('Internal Server Error');
     } else {
       console.log('File uploaded successfully:', data.Location);
-      res.send('File uploaded successfully!');
+      res.redirect('/index'); 
     }
   });
   //return res.send(response)
