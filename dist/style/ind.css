@@ -74,5 +74,8 @@ header {
   max-width: 70%;
 
 }
+body{
+  flex-direction: column;
+}
 }
  
